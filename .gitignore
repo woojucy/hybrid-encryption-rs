@@ -1,0 +1,29 @@
+target/
+**/*.rs.bk
+Cargo.lock
+Cargo.toml.orig
+
+# Generated files
+*.rmeta
+*.rlib
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+
+# Debugging and profiling tools
+*.dSYM/
+*.profraw
+
+# Rust compilation artifacts
+*.o
+*.so
+*.d
+*.a
+
+# Logs and temporary files
+*.log
+*.tmp
