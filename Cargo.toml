@@ -13,3 +13,8 @@ cbc = { version = "0.1.2", features = ["alloc"] }
 ctr = "0.9.1"
 hex = "0.4"
 rand = "0.8.4"
+rsa = { version = "0.9", features = ["serde", "sha2", "std"] }
+sha2 = "0.10"
+serde = { version = "1.0", features = ["derive"] }
+serde_test = "1.0"
+
