@@ -67,7 +67,9 @@ fn main() {
     );
 
     // Hybrid Encryption
-    let plaintext = b"Hello, Hybrid Encryption!";
+    // About 350 byte data
+    let message: &str = "dd7053dcdab2ed0b24ecae79e09b7217e7c99b7637166f258ae5f9382f9809694f58145e1e74929cada5c6dcf636a28cd02e955f9b829fa3fcea7dc14fdf8ce73c1fc6e4774aa8442f531c4c4824b5a088f631d908455ceed1eccd6e6d510acb77ff1fe12535971d5d61bde25bdeef600ed38a223a722529f665fc1c44dfd69ab5461926db6bb";
+    let plaintext = message.as_bytes(); // &str -> &[u8]
     println!("* Original Text: {}", String::from_utf8_lossy(plaintext));
 
     // 1️. generate RSA key
@@ -75,7 +77,7 @@ fn main() {
 
     // 2️. generate AES-256-GCM key and IV
     let aes_key = generate_aes_key();
-    let iv = generate_iv(12); 
+    let iv = generate_iv(12);
 
     // 3️. encrypt(AES-256-GCM) plaintext
     let encrypted_data =
