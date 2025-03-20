@@ -2,11 +2,10 @@ use aes::Aes256;
 use aes::cipher::{
     BlockDecryptMut, BlockEncryptMut, KeyIvInit, StreamCipher, block_padding::Pkcs7,
 };
-use aes_gcm::aead::{Aead, AeadInPlace, KeyInit, OsRng, Payload};
+use aes_gcm::aead::{Aead, KeyInit, OsRng, Payload};
 use aes_gcm::{Aes256Gcm, Nonce}; // AES-GCM
 use cbc::{Decryptor, Encryptor};
 use ctr::Ctr128BE;
-use hex;
 use rand::RngCore;
 use rsa::{RsaPrivateKey, RsaPublicKey, oaep::Oaep};
 use sha2::Sha256;
@@ -69,29 +68,26 @@ fn main() {
 
     // Hybrid Encryption
     let plaintext = b"Hello, Hybrid Encryption!";
-    println!("🔹 Original Text: {}", String::from_utf8_lossy(plaintext));
+    println!("* Original Text: {}", String::from_utf8_lossy(plaintext));
 
     // 1️. generate RSA key
     let (rsa_pub_key, rsa_priv_key) = generate_rsa_keys();
 
     // 2️. generate AES-256-GCM key and IV
     let aes_key = generate_aes_key();
-    let iv = generate_iv(12); // GCM 모드에서 12바이트 IV 사용
+    let iv = generate_iv(12); 
 
     // 3️. encrypt(AES-256-GCM) plaintext
     let encrypted_data =
         encrypt_aes_gcm(&aes_key, &iv, plaintext).expect("AES-GCM encryption failed");
-    println!(
-        "🔐 AES-GCM Encrypted Data: {}",
-        hex::encode(&encrypted_data)
-    );
+    println!("* AES-GCM Encrypted Data: {}", hex::encode(&encrypted_data));
 
     // 4️. encrypt(RSA-OAEP) AES key
     let encrypted_aes_key = rsa_pub_key
         .encrypt(&mut rand::thread_rng(), Oaep::new::<Sha256>(), &aes_key)
         .expect("RSA encryption failed");
     println!(
-        "🔑 Encrypted AES Key (RSA-OAEP): {}",
+        "* Encrypted AES Key (RSA-OAEP): {}",
         hex::encode(&encrypted_aes_key)
     );
 
@@ -104,7 +100,7 @@ fn main() {
     let decrypted_data = decrypt_aes_gcm(&decrypted_aes_key, &iv, &encrypted_data)
         .expect("AES-GCM decryption failed");
     println!(
-        "🔓 Decrypted Data: {}",
+        "* Decrypted Data: {}",
         String::from_utf8_lossy(&decrypted_data)
     );
 }
